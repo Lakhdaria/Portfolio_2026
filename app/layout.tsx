@@ -1,53 +1,42 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Jost } from "next/font/google";
+import PrefsProvider from "@/components/PrefsProvider";
+import { PREFS_BOOTSTRAP } from "@/lib/prefs";
 import "./globals.css";
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  style: ["normal", "italic"],
-  axes: ["opsz", "SOFT", "WONK"],
-  display: "swap",
-  variable: "--font-display",
-});
-
-const jost = Jost({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  display: "swap",
-  variable: "--font-body",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://souss.dev"),
-  title: "Sofiane — Ingénierie informatique & relation client",
+  title: "Sofiane — Ingénierie systèmes & réseaux",
   description:
-    "Portfolio de Sofiane, étudiant ingénieur en informatique et réseaux à l'ENSISA, en double cursus Master Relation client & marketing de l'assurance.",
-  keywords: [
-    "portfolio",
-    "ingénieur informatique",
-    "réseaux",
-    "ENSISA",
-    "CRM",
-    "Symfony",
-    "Next.js",
-    "Mulhouse",
-  ],
+    "Portfolio de Sofiane : applications métier, mobile, réseaux et communication. ENSISA et BUT MMI, Mulhouse.",
   authors: [{ name: "Sofiane" }],
   openGraph: {
     type: "website",
     locale: "fr_FR",
-    title: "Sofiane — Ingénierie informatique & relation client",
+    title: "Sofiane — Ingénierie systèmes & réseaux",
     description:
-      "Systèmes métier, applications web et mobile, diagnostic CRM. Portfolio 2026.",
+      "Applications métier, mobile, réseaux et communication. Portfolio 2026.",
     siteName: "Portfolio Sofiane",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fdfcfa",
+  themeColor: "#fcfbf9",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
+
+/**
+ * Décide du sort de la séquence d'ouverture AVANT le premier rendu : sans ça,
+ * la page apparaîtrait une fraction de seconde avant que le voile ne tombe.
+ *
+ * Elle rejoue à chaque chargement. Seule la réduction des animations demandée
+ * par le système la désactive.
+ */
+const introGate = `(function(){try{
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.documentElement.dataset.intro=reduce?'done':'pending';
+}catch(e){document.documentElement.dataset.intro='done';}})();`;
 
 export default function RootLayout({
   children,
@@ -55,8 +44,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={`${fraunces.variable} ${jost.variable}`}>
-      <body>{children}</body>
+    <html lang="fr">
+      <body>
+        <script dangerouslySetInnerHTML={{ __html: PREFS_BOOTSTRAP }} />
+        <script dangerouslySetInnerHTML={{ __html: introGate }} />
+        <PrefsProvider>{children}</PrefsProvider>
+      </body>
     </html>
   );
 }

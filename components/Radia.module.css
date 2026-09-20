@@ -1,0 +1,258 @@
+.radia {
+  overflow: visible;
+  width: auto;
+  height: clamp(130px, 17vh, 168px);
+
+  /* Quatre jetons pilotent tout le personnage. Changer --radia-glow suffit à
+     la repeindre entièrement (violet : #8b6cff, vert d'eau : #4fd1c5…). */
+  --radia-ink: #17151f;
+  --radia-ink-lift: #2a2636;
+  --radia-glow: #f2b757;
+  --radia-rim: 0.42;
+}
+
+/* --- Halo et coussin ----------------------------------------------------- */
+
+.halo {
+  animation: breathe 4.8s ease-in-out infinite;
+}
+
+.cushion {
+  fill: var(--radia-ink);
+  opacity: 0.4;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: squash 2.4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+/* Le coussin s'écrase quand elle redescend : la gravité se voit. */
+@keyframes squash {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleX(0.84);
+    opacity: 0.26;
+  }
+}
+
+/* --- Le flottement ------------------------------------------------------- */
+
+.float {
+  transform-box: view-box;
+  transform-origin: 70px 140px;
+  animation:
+    pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+    bounce 2.4s ease-in-out 0.6s infinite;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.72);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+  40% {
+    transform: translateY(-11px) scaleY(1.03);
+  }
+  70% {
+    transform: translateY(-2px) scaleY(0.98);
+  }
+}
+
+.body {
+  stroke: var(--radia-glow);
+  stroke-width: 1;
+  stroke-opacity: var(--radia-rim);
+}
+
+/* --- La mèche ------------------------------------------------------------ */
+
+.tuft {
+  fill: none;
+  stroke: var(--radia-ink-lift);
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: sway 2.8s ease-in-out infinite alternate;
+}
+
+@keyframes sway {
+  from {
+    transform: rotate(-11deg);
+  }
+  to {
+    transform: rotate(11deg);
+  }
+}
+
+/* --- Les mains ----------------------------------------------------------- */
+
+.handLeft,
+.handRight {
+  fill: var(--radia-ink-lift);
+}
+
+.handLeft {
+  animation: bobA 1.9s ease-in-out infinite alternate;
+}
+
+.handRight {
+  animation: bobB 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes bobA {
+  from {
+    transform: translate(2px, 5px);
+  }
+  to {
+    transform: translate(-2px, -6px);
+  }
+}
+
+@keyframes bobB {
+  from {
+    transform: translate(-2px, -4px);
+  }
+  to {
+    transform: translate(2px, 6px);
+  }
+}
+
+/* Quand elle tape, les mains s'agitent. */
+.radia[data-busy="true"] .handLeft,
+.radia[data-busy="true"] .handRight {
+  animation-duration: 0.3s;
+}
+
+/* --- Le visage ----------------------------------------------------------- */
+
+.eyes {
+  fill: var(--radia-glow);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 4.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,
+  91%,
+  100% {
+    transform: scaleY(1);
+  }
+  94% {
+    transform: scaleY(0.12);
+  }
+}
+
+.glints {
+  fill: #fffaf0;
+  opacity: 0.92;
+}
+
+.cheeks {
+  fill: var(--radia-glow);
+  opacity: 0.22;
+}
+
+.smile {
+  fill: none;
+  stroke: var(--radia-glow);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  transform-box: fill-box;
+  transform-origin: center top;
+}
+
+/* Elle sourit plus grand pendant qu'elle parle. */
+.radia[data-talking="true"] .smile {
+  animation: chat 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes chat {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.16, 1.5);
+  }
+}
+
+.radia[data-talking="true"] .cheeks {
+  opacity: 0.34;
+}
+
+/* --- Étincelles ---------------------------------------------------------- */
+
+.sparks {
+  fill: var(--radia-glow);
+}
+
+.sparks circle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: twinkle 3.6s ease-in-out infinite;
+  opacity: 0;
+}
+
+.sparks circle:nth-child(2) {
+  animation-duration: 4.4s;
+  animation-delay: -1.5s;
+}
+
+.sparks circle:nth-child(3) {
+  animation-duration: 3.1s;
+  animation-delay: -2.4s;
+}
+
+.sparks circle:nth-child(4) {
+  animation-duration: 4.9s;
+  animation-delay: -0.8s;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    transform: translateY(6px) scale(0.4);
+    opacity: 0;
+  }
+  45% {
+    transform: translateY(-6px) scale(1);
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radia,
+  .radia * {
+    animation: none !important;
+  }
+  .sparks circle {
+    opacity: 0.6;
+  }
+}

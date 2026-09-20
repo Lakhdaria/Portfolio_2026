@@ -1,25 +1,25 @@
-import TopBar from "@/components/TopBar";
+import BootIntro from "@/components/BootIntro";
+import SiteHeader from "@/components/SiteHeader";
 import Hero from "@/components/Hero";
-import ProjectIndex from "@/components/ProjectIndex";
-import Approach from "@/components/Approach";
-import Skills from "@/components/Skills";
-import Timeline from "@/components/Timeline";
+import SkillCards from "@/components/SkillCards";
+import WorkCards from "@/components/WorkCards";
 import Contact from "@/components/Contact";
+import Companion from "@/components/Companion";
 import SiteFooter from "@/components/SiteFooter";
 
 export default function Page() {
   return (
     <>
-      <TopBar />
+      <BootIntro />
+      <SiteHeader />
       <main>
         <Hero />
-        <ProjectIndex />
-        <Approach />
-        <Skills />
-        <Timeline />
+        <SkillCards />
+        <WorkCards />
         <Contact />
       </main>
       <SiteFooter />
+      <Companion />
     </>
   );
 }

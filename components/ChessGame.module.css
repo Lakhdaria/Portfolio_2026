@@ -1,0 +1,173 @@
+.game {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: clamp(20px, 4vw, 44px);
+}
+
+.boardWrap {
+  flex: 1 1 320px;
+  max-width: 520px;
+}
+
+.board {
+  /* L'échiquier ne suit pas le thème du site : en sombre, des pièces noires
+     sur des cases sombres ne se voient plus. Un échiquier a ses couleurs
+     propres, comme un vrai plateau. */
+  --sq-light: #efe5d4;
+  --sq-dark: #b2895c;
+  --sq-mark: #d8b25f;
+
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  aspect-ratio: 1;
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgb(30 24 16 / 0.25);
+  box-shadow: var(--shadow-soft);
+}
+
+.square {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  position: relative;
+  cursor: pointer;
+  background: var(--sq-light);
+  transition: background-color 0.2s var(--ease);
+}
+
+.square[data-dark="true"] {
+  background: var(--sq-dark);
+}
+
+.square[data-last="true"] {
+  background: color-mix(in srgb, var(--sq-mark) 45%, var(--sq-light));
+}
+
+.square[data-dark="true"][data-last="true"] {
+  background: color-mix(in srgb, var(--sq-mark) 55%, var(--sq-dark));
+}
+
+.square[data-from="true"],
+.square[data-dark="true"][data-from="true"] {
+  background: var(--sq-mark);
+}
+
+/* Un point pour une case libre, un anneau pour une prise. */
+.square[data-target="true"]::after {
+  content: "";
+  position: absolute;
+  width: 26%;
+  height: 26%;
+  border-radius: 50%;
+  background: rgb(30 24 16 / 0.38);
+}
+
+.square[data-target="true"]:has(.piece)::after {
+  width: 84%;
+  height: 84%;
+  background: transparent;
+  border: 3px solid rgb(30 24 16 / 0.38);
+}
+
+.piece {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(22px, 5.4vw, 40px);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.piece[data-color="w"] {
+  color: #fdfbf6;
+  text-shadow:
+    0 0 1px #2a241c,
+    0 1px 0 #2a241c,
+    0 -1px 0 #2a241c,
+    1px 0 0 #2a241c,
+    -1px 0 0 #2a241c;
+}
+
+.piece[data-color="b"] {
+  color: #241d15;
+  text-shadow:
+    0 0 1px rgb(255 255 255 / 0.5),
+    0 1px 0 rgb(255 255 255 / 0.35),
+    0 -1px 0 rgb(255 255 255 / 0.3);
+}
+
+/* --- Colonne d'état ------------------------------------------------------- */
+
+.side {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 6px;
+}
+
+.status {
+  margin: 0;
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+  font-weight: 600;
+  letter-spacing: var(--track-title);
+  text-wrap: balance;
+}
+
+.status[data-busy="true"] {
+  color: var(--brass);
+}
+
+.status[data-busy="true"]::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: tick 0.9s ease-in-out infinite;
+}
+
+@keyframes tick {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.note {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.reset {
+  appearance: none;
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 10px 20px;
+  border: 1px solid var(--cream-deep);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.3s var(--ease),
+    border-color 0.3s var(--ease);
+}
+
+.reset:hover {
+  background: var(--cream);
+  border-color: var(--brass);
+}
