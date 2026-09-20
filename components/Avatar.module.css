@@ -1,0 +1,145 @@
+.avatar {
+  overflow: visible;
+  width: auto;
+  height: clamp(148px, 19vh, 186px);
+  animation: bob 2.6s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.shade {
+  fill: rgb(0 0 0 / 0.22);
+}
+
+.shell {
+  fill: var(--cream);
+  stroke: var(--brass);
+  stroke-width: 1.5;
+}
+
+.face {
+  fill: #13100d;
+}
+
+.foot {
+  fill: var(--cream-deep);
+}
+
+.antenna {
+  stroke: var(--brass);
+  stroke-width: 2;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.beacon {
+  fill: var(--brass-lite);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    r: 4;
+  }
+  50% {
+    opacity: 1;
+    r: 5.4;
+  }
+}
+
+/* --- Yeux : clignement régulier ----------------------------------------- */
+
+.eyes {
+  fill: var(--brass-lite);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 4.6s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.12);
+  }
+}
+
+/* --- Bouche : s'ouvre tant qu'il parle ----------------------------------- */
+
+.mouth {
+  fill: var(--brass-lite);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.avatar[data-talking="true"] .mouth {
+  animation: chatter 0.16s steps(2, end) infinite;
+}
+
+@keyframes chatter {
+  0% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(2.6);
+  }
+}
+
+/* --- Bras : pianotent pendant la frappe ---------------------------------- */
+
+.armLeft,
+.armRight {
+  fill: var(--cream-deep);
+  transform-box: fill-box;
+  transform-origin: top center;
+}
+
+.avatar[data-typing="true"] .armLeft {
+  animation: tapA 0.22s ease-in-out infinite alternate;
+}
+
+.avatar[data-typing="true"] .armRight {
+  animation: tapB 0.22s ease-in-out infinite alternate;
+}
+
+@keyframes tapA {
+  from {
+    transform: rotate(-6deg);
+  }
+  to {
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes tapB {
+  from {
+    transform: rotate(8deg);
+  }
+  to {
+    transform: rotate(-8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar,
+  .beacon,
+  .eyes,
+  .mouth,
+  .armLeft,
+  .armRight {
+    animation: none !important;
+  }
+}
