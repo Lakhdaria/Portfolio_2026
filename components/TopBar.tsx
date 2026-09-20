@@ -3,10 +3,10 @@ import styles from "./TopBar.module.css";
 
 export default function TopBar() {
   return (
-    <div className={styles.bar}>
+    <header className={styles.bar}>
       <div className={`wrap ${styles.inner}`}>
         <a className={styles.signature} href="#top">
-          {site.alias}
+          {site.name} <em>—</em> {site.alias}
         </a>
         <nav className={styles.nav} aria-label="Navigation principale">
           {nav.map((item) => (
@@ -16,6 +16,6 @@ export default function TopBar() {
           ))}
         </nav>
       </div>
-    </div>
+    </header>
   );
 }

@@ -2,54 +2,95 @@ export type Project = {
   id: string;
   year: string;
   title: string;
-  line: string;
+  domain: string;
+  note: string;
+  body: string[];
   stack: string[];
-  /** La première carte occupe deux colonnes sur grand écran. */
-  wide?: boolean;
 };
 
 export const projects: Project[] = [
   {
     id: "coupole",
     year: "2026",
-    title: "Cinéma La Coupole",
-    line: "Le système de gestion de la salle où je travaille. Plannings, paie, messagerie.",
-    stack: ["Symfony", "Next.js", "MySQL"],
-    wide: true,
+    title: "Système de gestion — Cinéma La Coupole",
+    domain: "Application métier",
+    note: "Commande réelle",
+    body: [
+      "Un outil complet pour l'exploitation d'une salle de cinéma : back-office EasyAdmin pour la direction, tableaux de bord employés, messagerie interne, plannings et bulletins de paie.",
+      "Conçu depuis le poste d'accueil : chaque écran répond à une friction observée en salle plutôt qu'à une spécification théorique.",
+    ],
+    stack: ["Symfony", "Next.js", "EasyAdmin", "MySQL", "API REST"],
   },
   {
-    id: "relyens",
+    id: "relyens-diagnostic",
     year: "2026",
-    title: "Relyens",
-    line: "Diagnostic stratégique et blog corporate pour un groupe d'assurance.",
-    stack: ["Audit CRM", "HTML", "JS"],
+    title: "Diagnostic stratégique Relyens",
+    domain: "CRM & stratégie",
+    note: "Mémoire de Master",
+    body: [
+      "Diagnostic d'entreprise de trente-cinq pages sur un groupe mutualiste d'assurance : SWOT, PESTEL, benchmark concurrentiel, audit de maturité digitale et des réseaux sociaux.",
+      "Volet données : analyse de la gouvernance CRM et recommandations d'architecture de la relation client.",
+    ],
+    stack: ["Audit digital", "SWOT · PESTEL", "Benchmark", "Gouvernance data"],
+  },
+  {
+    id: "relyens-blog",
+    year: "2026",
+    title: "Blog corporate Relyens",
+    domain: "Interface & rôles",
+    note: "Prolongement du diagnostic",
+    body: [
+      "Plateforme éditoriale d'entreprise livrée en un seul fichier HTML autonome, avec authentification locale et séparation des rôles administrateur / collaborateur.",
+      "Exercice de contrainte : obtenir une identité visuelle de niveau agence sans dépendance externe ni build.",
+    ],
+    stack: ["HTML", "CSS", "JavaScript", "localStorage"],
   },
   {
     id: "edutrack",
     year: "2025",
     title: "EduTrack",
-    line: "Emploi du temps et forum étudiant, sur iOS et Android.",
-    stack: ["React Native", "Expo"],
+    domain: "Application mobile",
+    note: "iOS & Android",
+    body: [
+      "Application mobile étudiante réunissant l'emploi du temps et un forum d'entraide entre promotions.",
+      "Pensée pour l'usage de couloir : consultation en trois secondes entre deux cours.",
+    ],
+    stack: ["React Native", "Expo", "JavaScript"],
   },
   {
     id: "messagerie",
     year: "2025",
     title: "Messagerie ENSISA",
-    line: "Chat temps réel avec notes vocales et modération.",
-    stack: ["Django", "WebSockets"],
+    domain: "Temps réel",
+    note: "Déployée sur GitHub",
+    body: [
+      "Application de discussion pour la promotion : messages en temps réel, notes vocales, emojis, rôles de modération et administration complète.",
+      "L'occasion de traiter sérieusement la question des permissions et de la modération dans un espace étudiant.",
+    ],
+    stack: ["Django", "Python", "WebSockets", "SQLite"],
   },
   {
     id: "nird",
     year: "2025",
-    title: "NIRD",
-    line: "Simulateur Linux et plateforme éducative, en 36 heures.",
-    stack: ["JavaScript", "Hackathon"],
+    title: "NIRD / DoctorPC — Nuit de l'Info",
+    domain: "Hackathon",
+    note: "36 heures, en équipe",
+    body: [
+      "Plateforme éducative sur le numérique responsable, avec simulateur Linux intégré et assistant conversationnel.",
+      "Contribution : intégration responsive et logique du simulateur.",
+    ],
+    stack: ["JavaScript", "Simulateur shell", "Chatbot", "Responsive"],
   },
   {
     id: "climat",
     year: "2025",
-    title: "Climat 1950–2024",
-    line: "Analyse spectrale de soixante-quatorze ans de relevés.",
-    stack: ["Python", "FFT"],
+    title: "Climat de Strasbourg-Entzheim, 1950–2024",
+    domain: "Analyse de données",
+    note: "Soixante-quatorze ans de relevés",
+    body: [
+      "Analyse spectrale d'une série météorologique longue : transformée de Fourier, identification des cycles saisonniers et pluriannuels, estimation du bruit de fond.",
+      "Projet jumeau : implémentation d'algorithmes de bandits (greedy, ε-greedy, Thompson Sampling) sur une simulation d'attribution de traitements médicaux, avec Enzo Battaglia.",
+    ],
+    stack: ["Python", "NumPy", "FFT", "Matplotlib"],
   },
 ];

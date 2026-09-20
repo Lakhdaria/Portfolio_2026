@@ -1,12 +1,11 @@
 .bar {
   position: fixed;
   inset: 0 0 auto 0;
-  z-index: 60;
-  height: var(--bar-height);
-  background: color-mix(in srgb, var(--paper) 86%, transparent);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+  z-index: 50;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border-bottom: 1px solid var(--rule-soft);
 }
 
 .inner {
@@ -14,29 +13,64 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  height: 100%;
+  height: var(--bar-height);
 }
 
 .signature {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-family: var(--display);
+  font-variation-settings: "opsz" 40, "SOFT" 0, "WONK" 1;
+  font-weight: 500;
+  font-size: 17px;
+  letter-spacing: 0.01em;
   text-decoration: none;
+  white-space: nowrap;
+}
+
+.signature em {
+  font-style: italic;
+  color: var(--brass);
 }
 
 .nav {
   display: flex;
-  gap: clamp(18px, 3vw, 34px);
+  gap: 26px;
+  align-items: center;
 }
 
 .nav a {
-  font-size: 13px;
-  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
   text-decoration: none;
-  color: var(--text-soft);
+  color: var(--ink-soft);
+  position: relative;
+  padding-block: 4px;
   transition: color 0.3s var(--ease);
 }
 
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--brass);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+
 .nav a:hover {
-  color: var(--text);
+  color: var(--ink);
+}
+
+.nav a:hover::after {
+  transform: scaleX(1);
+}
+
+@media (max-width: 860px) {
+  .nav {
+    display: none;
+  }
 }

@@ -1,41 +1,34 @@
-"use client";
-
-import NetworkField from "./NetworkField";
-import { usePrefs } from "./PrefsProvider";
-import { site } from "@/content/i18n";
+import { site, specs } from "@/content/site";
 import styles from "./Hero.module.css";
 
 export default function Hero() {
-  const { t } = usePrefs();
-
   return (
-    <header className={styles.hero} id="top">
-      <NetworkField className={styles.field} />
+    <div className={styles.hero} id="top">
+      <div className="wrap">
+        <div className={`label ${styles.eyebrow} ${styles.r1}`}>
+          <span>Portfolio 2026</span>
+          <span>Mulhouse, Alsace</span>
+          <span>Ingénierie &amp; relation client</span>
+        </div>
 
-      <div className={`wrap ${styles.inner}`}>
-        <p className={styles.kicker}>{t.hero.kicker}</p>
-        <h1 className={styles.title}>
-          {t.hero.titleTop}
-          <br />
-          {t.hero.titleBottom}
+        <h1 className={`${styles.title} ${styles.r2}`}>
+          Je construis des systèmes qui tiennent, <i>du réseau</i> jusqu&apos;au
+          client.
         </h1>
-        <p className={styles.sub}>
-          {site.name} — {site.city}
-        </p>
 
-        <a className={styles.cta} href="#travaux">
-          {t.hero.cta}
-        </a>
-      </div>
+        <p className={`${styles.lede} ${styles.r3}`}>{site.tagline}</p>
 
-      <div className={`wrap ${styles.markers}`}>
-        {t.markers.map((marker) => (
-          <div key={marker.value}>
-            <span className={styles.markerValue}>{marker.value}</span>
-            <span className={styles.markerCaption}>{marker.caption}</span>
-          </div>
-        ))}
+        <div className={styles.spec}>
+          <dl>
+            {specs.map((item) => (
+              <div key={item.term}>
+                <dt className="label">{item.term}</dt>
+                <dd>{item.detail}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
-    </header>
+    </div>
   );
 }
