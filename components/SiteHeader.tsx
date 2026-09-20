@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { usePrefs } from "./PrefsProvider";
 import { LANGS, site } from "@/content/i18n";
 import * as voice from "@/lib/voice";
@@ -8,6 +10,17 @@ import styles from "./SiteHeader.module.css";
 
 const SECTIONS = ["competences", "travaux", "jeu", "contact"] as const;
 type SectionId = (typeof SECTIONS)[number];
+
+/** La récréation a sa propre route ; le reste vit sur la page d'accueil. */
+const HREF: Record<SectionId, string> = {
+  competences: "/#competences",
+  travaux: "/#travaux",
+  jeu: "/jouer",
+  contact: "/#contact",
+};
+
+/** Les sections que l'on peut surveiller au défilement (page d'accueil). */
+const SPY = ["competences", "travaux", "contact"] as const;
 
 /**
  * Header en îlot flottant.
@@ -22,6 +35,8 @@ type SectionId = (typeof SECTIONS)[number];
  */
 export default function SiteHeader() {
   const { prefs, set, t } = usePrefs();
+  const pathname = usePathname();
+  const onArena = pathname?.startsWith("/jouer") ?? false;
 
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -64,9 +79,14 @@ export default function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [menu]);
 
-  // Quelle section est à l'écran ?
+  // Quelle section est à l'écran ? Sur la page Jouer, la réponse est connue.
   useEffect(() => {
-    const targets = SECTIONS.map((id) => document.getElementById(id)).filter(
+    if (onArena) {
+      setActive("jeu");
+      return;
+    }
+
+    const targets = SPY.map((id) => document.getElementById(id)).filter(
       (el): el is HTMLElement => el !== null,
     );
     if (!targets.length) return;
@@ -83,7 +103,7 @@ export default function SiteHeader() {
 
     targets.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [onArena]);
 
   // La pastille se cale sous le lien actif.
   const placePill = useCallback(() => {
@@ -116,8 +136,14 @@ export default function SiteHeader() {
     };
   }, [menu]);
 
-  const go = (id: string) => {
+  /**
+   * Sur l'accueil, une ancre défile en douceur. Ailleurs, on laisse le lien
+   * faire son travail de navigation.
+   */
+  const go = (event: React.MouseEvent, id: SectionId | "top") => {
     setMenu(false);
+    if (onArena) return; // le <Link> prend le relais
+    event.preventDefault();
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -132,17 +158,14 @@ export default function SiteHeader() {
     <>
       <div className={styles.rail} data-hidden={hidden}>
         <header className={styles.island} data-scrolled={scrolled}>
-          <a
+          <Link
             className={styles.mark}
-            href="#top"
-            onClick={(e) => {
-              e.preventDefault();
-              go("top");
-            }}
+            href="/#top"
+            onClick={(e) => go(e, "top")}
           >
             <span className={styles.dot} aria-hidden="true" />
             {site.alias}
-          </a>
+          </Link>
 
           <nav ref={navRef} className={styles.nav} aria-label={t.cta.menu}>
             {pill && (
@@ -153,18 +176,18 @@ export default function SiteHeader() {
               />
             )}
             {SECTIONS.map((id) => (
-              <a
+              <Link
                 key={id}
                 data-id={id}
                 data-active={active === id}
-                href={`#${id}`}
+                href={HREF[id]}
                 onClick={(e) => {
-                  e.preventDefault();
-                  go(id);
+                  if (id === "jeu") return setMenu(false); // vraie navigation
+                  go(e, id);
                 }}
               >
                 {labels[id]}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -279,20 +302,20 @@ export default function SiteHeader() {
 
         <nav aria-label={t.cta.menu}>
           {SECTIONS.map((id, i) => (
-            <a
+            <Link
               key={id}
-              href={`#${id}`}
+              href={HREF[id]}
               style={{ transitionDelay: menu ? `${140 + i * 80}ms` : "0ms" }}
               onClick={(e) => {
-                e.preventDefault();
-                go(id);
+                if (id === "jeu") return setMenu(false);
+                go(e, id);
               }}
             >
               <span className={styles.num}>
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className={styles.word}>{labels[id]}</span>
-            </a>
+            </Link>
           ))}
         </nav>
 

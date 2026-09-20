@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Radia from "./Radia";
 import { usePrefs } from "./PrefsProvider";
 import { hasOnboarded, markOnboarded } from "@/lib/prefs";
@@ -16,7 +17,6 @@ type Mode = "closed" | "chat" | "onboarding" | "faq" | "settings";
 
 /** Les questions d'accueil, dans l'ordre où Radia les pose. */
 type Step = "lang" | "theme" | "font" | "speak" | "done";
-const STEPS: Step[] = ["lang", "theme", "font", "speak", "done"];
 
 /**
  * Radia sur le site.
@@ -28,10 +28,15 @@ const STEPS: Step[] = ["lang", "theme", "font", "speak", "done"];
  */
 export default function Companion() {
   const { prefs, set, t } = usePrefs();
+  const pathname = usePathname();
+  const router = useRouter();
+  const onArena = pathname?.startsWith("/jouer") ?? false;
 
   const [mode, setMode] = useState<Mode>("closed");
   const [step, setStep] = useState<Step>("lang");
-  const [section, setSection] = useState<SectionId>("top");
+  const [section, setSection] = useState<SectionId>(
+    pathname?.startsWith("/jouer") ? "jeu" : "top",
+  );
   const [index, setIndex] = useState(0);
   const [shown, setShown] = useState("");
   const [answer, setAnswer] = useState<{ text: string; target: string } | null>(
@@ -151,6 +156,12 @@ export default function Companion() {
   /* --- Section à l'écran -------------------------------------------------- */
 
   useEffect(() => {
+    // Sur la page Jouer, il n'y a qu'une section : inutile de surveiller.
+    if (onArena) {
+      setSection("jeu");
+      return;
+    }
+
     const targets = SECTIONS.map((id) => document.getElementById(id)).filter(
       (el): el is HTMLElement => el !== null,
     );
@@ -168,7 +179,7 @@ export default function Companion() {
 
     targets.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [onArena]);
 
   /* --- Prise de parole spontanée ------------------------------------------ */
 
@@ -230,9 +241,20 @@ export default function Companion() {
     type(question.answer);
   };
 
+  /**
+   * La cible peut être une section de l'accueil ou la page Jouer. Si l'ancre
+   * n'existe pas sur la page courante, on navigue au lieu de ne rien faire.
+   */
   const goTo = (target: string) => {
     voice.advance();
-    document.getElementById(target)?.scrollIntoView({ behavior: "smooth" });
+    const here = document.getElementById(target);
+    if (here) {
+      here.scrollIntoView({ behavior: "smooth" });
+    } else if (target === "jeu") {
+      router.push("/jouer");
+    } else {
+      router.push(`/#${target}`);
+    }
     setMode("closed");
     setAnswer(null);
   };

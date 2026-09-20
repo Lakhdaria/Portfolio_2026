@@ -1,0 +1,44 @@
+.page {
+  /* Le header flottant mange le haut de page : on lui laisse la place. */
+  padding-top: calc(var(--bar-height) + 16px);
+  min-height: 100vh;
+  background:
+    radial-gradient(80% 60% at 50% 0%, var(--cream) 0%, transparent 70%),
+    var(--paper);
+}
+
+.top {
+  padding-top: clamp(18px, 4vw, 34px);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px 8px 12px;
+  border: 1px solid var(--cream-deep);
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--text-soft);
+  text-decoration: none;
+  transition:
+    border-color 0.3s var(--ease),
+    color 0.3s var(--ease),
+    transform 0.3s var(--ease);
+}
+
+.back svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.back:hover {
+  border-color: var(--brass);
+  color: var(--text);
+  transform: translateX(-3px);
+}

@@ -21,7 +21,7 @@ const Connect4Game = dynamic(() => import("./Connect4Game"), {
 type Game = "chess" | "connect4";
 type Level = "calm" | "sharp" | "merciless";
 
-export default function Arena() {
+export default function Arena({ standalone = false }: { standalone?: boolean }) {
   const { t } = usePrefs();
   const [game, setGame] = useState<Game>("connect4");
   const [level, setLevel] = useState<Level>("merciless");
@@ -34,7 +34,11 @@ export default function Arena() {
   ];
 
   return (
-    <section className="panel" id="jeu">
+    <section
+      className="panel"
+      id="jeu"
+      style={standalone ? { paddingBlockStart: "clamp(28px, 5vw, 56px)" } : undefined}
+    >
       <div className="wrap">
         <div className="panelHead">
           <p className="panelKicker">{t.arena.kicker}</p>

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import PrefsProvider from "@/components/PrefsProvider";
 import { PREFS_BOOTSTRAP } from "@/lib/prefs";
 import "./globals.css";
 
@@ -47,7 +48,7 @@ export default function RootLayout({
       <body>
         <script dangerouslySetInnerHTML={{ __html: PREFS_BOOTSTRAP }} />
         <script dangerouslySetInnerHTML={{ __html: introGate }} />
-        {children}
+        <PrefsProvider>{children}</PrefsProvider>
       </body>
     </html>
   );

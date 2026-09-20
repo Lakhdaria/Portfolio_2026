@@ -15,12 +15,49 @@ npm run start
 
 Aucune variable d'environnement. Se déploie tel quel sur Vercel.
 
+## Mettre le dépôt à jour — à lire avant de pousser
+
+Les versions successives ont **supprimé** des fichiers. Si l'archive est
+décompressée par-dessus l'ancienne sans les retirer, ils restent dans le dépôt,
+gardent leurs imports vers des modules disparus, et le build casse — sur Vercel
+avec un `Module not found: Can't resolve '@/content/site'` ou équivalent.
+En local rien ne se voit, parce que ces fichiers ne sont plus importés nulle
+part par la page.
+
+Le plus sûr : **vider le dossier du projet** (sauf `.git`) puis y décompresser
+l'archive. Sinon, supprimer explicitement :
+
+```
+components/TopBar.tsx           components/TopBar.module.css
+components/Approach.tsx         components/Approach.module.css
+components/Skills.tsx           components/Skills.module.css
+components/Timeline.tsx         components/Timeline.module.css
+components/ProjectIndex.tsx     components/ProjectIndex.module.css
+components/Avatar.tsx           components/Avatar.module.css
+components/Calder.tsx           components/Calder.module.css
+components/Shade.tsx            components/Shade.module.css
+content/site.ts                 content/projects.ts
+content/dialogue.ts
+```
+
+Vérifier avant de pousser :
+
+```bash
+rm -rf node_modules .next && npm ci && npm run build
+```
+
+Ce build à froid est exactement ce que fait Vercel. S'il passe ici, il passe
+là-bas. Penser aussi à committer `package-lock.json` : sans lui, Vercel
+réinstalle des versions qui ne sont pas celles testées.
+
 ## Structure
 
 ```
 app/
-  layout.tsx          Métadonnées + les deux scripts joués avant la peinture
-  page.tsx            Assemblage, sous <PrefsProvider>
+  layout.tsx          Métadonnées, les deux scripts d'avant-peinture,
+                      et <PrefsProvider> autour des deux routes
+  page.tsx            L'accueil
+  jouer/page.tsx      La récréation, sur sa propre route
   globals.css         Jetons clairs et sombres, régime de lecture, primitives
 components/
   PrefsProvider       Langue, thème, police, bavardise — partagés par tout le site
@@ -30,6 +67,7 @@ components/
   Companion           Radia sur le site : accueil, commentaires, questions
   NetworkField        Maillage 3D Three.js, accordé au thème
   Arena               Les deux jeux, onglets et niveaux
+  ArenaPage           L'enveloppe de /jouer : lien de retour, mise en page
   ChessGame           Échiquier
   Connect4Game        Grille du Puissance 4
   Hero SkillCards WorkCards Contact SiteFooter Glyph Reveal
@@ -127,7 +165,12 @@ numérotées.
 
 ## Les jeux
 
-Section « Jouer », deux onglets, trois niveaux. Les moteurs ne sont chargés
+**Sur leur propre route, `/jouer`** — délibérément hors du déroulé de
+l'accueil : un recruteur parcourt un portfolio en diagonale, il n'a pas à
+traverser une partie d'échecs pour arriver au contact. Le lien reste dans la
+navigation, et Radia y emmène quand on le lui demande.
+
+Deux onglets, trois niveaux. Les moteurs ne sont chargés
 qu'à l'ouverture de leur onglet : inutile d'imposer chess.js à quelqu'un venu
 lire un portfolio.
 
