@@ -1,0 +1,31 @@
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0 clamp(26px, 4vw, 52px);
+}
+
+.column {
+  padding-block: 6px 26px;
+}
+
+.column h3 {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brass);
+  font-weight: 400;
+  margin: 0 0 14px;
+}
+
+.column ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.column li {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 14.5px;
+  color: var(--ink-soft);
+}

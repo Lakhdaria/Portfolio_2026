@@ -1,0 +1,62 @@
+.closing {
+  background: linear-gradient(
+    180deg,
+    var(--paper),
+    var(--cream) 42%,
+    var(--cream-deep)
+  );
+  border-top: 1px solid var(--rule);
+}
+
+.statement {
+  font-family: var(--display);
+  font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 1;
+  font-weight: 300;
+  font-size: clamp(2rem, 6vw, 4.2rem);
+  line-height: 1.06;
+  letter-spacing: -0.022em;
+  margin: 0;
+  max-width: 15ch;
+  text-wrap: balance;
+}
+
+.statement i {
+  font-style: italic;
+  color: var(--brass);
+  font-weight: 400;
+}
+
+.rows {
+  margin-top: clamp(34px, 5vw, 58px);
+  border-top: 1px solid var(--rule);
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  transition: padding-left 0.45s var(--ease);
+}
+
+a.row:hover {
+  padding-left: 10px;
+}
+
+a.row:hover .value {
+  color: var(--brass);
+}
+
+.value {
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  transition: color 0.35s var(--ease);
+}
+
+.arrow {
+  font-size: 13px;
+  color: var(--muted);
+  min-width: 13px;
+}

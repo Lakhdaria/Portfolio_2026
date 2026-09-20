@@ -1,0 +1,46 @@
+.track {
+  border-top: 1px solid var(--rule-soft);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: 0 22px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.when {
+  font-size: 12px;
+  letter-spacing: 0.09em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  padding-top: 4px;
+}
+
+.row h3 {
+  font-family: var(--display);
+  font-variation-settings: "opsz" 40, "SOFT" 0, "WONK" 1;
+  font-weight: 400;
+  font-size: 1.1rem;
+  margin: 0 0 5px;
+  letter-spacing: -0.01em;
+}
+
+.row p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 14.5px;
+  max-width: 62ch;
+}
+
+@media (max-width: 560px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .when {
+    padding-top: 0;
+  }
+}

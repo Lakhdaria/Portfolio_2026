@@ -1,0 +1,164 @@
+/* ==========================================================================
+   Portfolio — direction artistique « dossier de maison »
+   Papier blanc, strates de crème, filets fins, un seul accent laiton.
+   ========================================================================== */
+
+:root {
+  /* Surfaces */
+  --paper: #fdfcfa;
+  --cream: #f6f1e8;
+  --cream-deep: #ede4d4;
+
+  /* Filets */
+  --rule: #dfd6c4;
+  --rule-soft: #ede7db;
+
+  /* Encres */
+  --ink: #17140f;
+  --ink-soft: #4f4739;
+  --muted: #8c8375;
+
+  /* Accent — à utiliser au compte-gouttes */
+  --brass: #9a7647;
+  --brass-soft: #c3a579;
+
+  /* Typographie */
+  --display: var(--font-display), "Hoefler Text", Georgia, "Times New Roman", serif;
+  --body: var(--font-body), "Avenir Next", Avenir, "Segoe UI", system-ui, sans-serif;
+
+  /* Rythme */
+  --gutter: clamp(20px, 5vw, 72px);
+  --max: 1180px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --bar-height: 58px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 1px solid var(--brass);
+  outline-offset: 4px;
+}
+
+section[id] {
+  scroll-margin-top: calc(var(--bar-height) + 16px);
+}
+
+/* --------------------------------------------------------------------------
+   Primitives partagées
+   -------------------------------------------------------------------------- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.label {
+  font-family: var(--body);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.section {
+  padding-block: clamp(66px, 9vw, 120px);
+}
+
+.section--cream {
+  background: var(--cream);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: clamp(30px, 4vw, 48px);
+}
+
+.sectionHead h2 {
+  font-family: var(--display);
+  font-variation-settings: "opsz" 72, "SOFT" 0, "WONK" 1;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   Entrée de page
+   -------------------------------------------------------------------------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
